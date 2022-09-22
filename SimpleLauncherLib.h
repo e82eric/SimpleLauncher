@@ -63,5 +63,6 @@ struct KeyBinding
 
 void start_scratch_not_elevated(TCHAR *cmdArgs);
 void start_launcher(TCHAR *cmdArgs);
+void start_app(TCHAR *cmdArgs);
 BOOL handle_key_press(int code, WPARAM w, LPARAM l, KeyBinding** keyBindings, int numberOfKeyBindings);
 KeyBinding* keybinding_create_cmd_args(int modifiers, unsigned int key, void (*action) (TCHAR*), TCHAR *cmdArg);

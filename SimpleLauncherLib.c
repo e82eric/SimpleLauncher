@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <windows.h>
+#include <shellapi.h>
 #include "SimpleLauncherLib.h"
 #pragma comment(lib, "user32.lib")
+#pragma comment(lib, "Shell32.lib")
 
 static TCHAR *cmdLineExe = L"C:\\Windows\\System32\\cmd.exe";
 void start_scratch_not_elevated(TCHAR *cmdArgs)
@@ -77,6 +79,39 @@ void start_launcher(TCHAR *cmdArgs)
         NULL,
         FALSE,
         CREATE_NEW_CONSOLE,
+        NULL,
+        NULL,
+        &si,
+        &pi)
+    ) 
+    {
+        return;
+    }
+
+    CloseHandle( pi.hProcess );
+    CloseHandle( pi.hThread );
+}
+
+void start_app(TCHAR *cmdArgs)
+{
+    STARTUPINFO si = { 0 };
+    si.dwFlags = STARTF_USEPOSITION |  STARTF_USESIZE | STARTF_USESHOWWINDOW;
+    si.dwX= 200;
+    si.dwY = 100;
+    si.dwXSize = 2000;
+    si.dwYSize = 1200;
+    si.wShowWindow = SW_HIDE;
+    si.lpTitle = L"SimpleWindowManager Scratch";
+
+    PROCESS_INFORMATION pi = { 0 };
+
+    if( !CreateProcess(
+        cmdArgs,
+        NULL,
+        NULL,
+        NULL,
+        FALSE,
+        NORMAL_PRIORITY_CLASS,
         NULL,
         NULL,
         &si,
